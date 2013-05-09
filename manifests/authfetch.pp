@@ -26,7 +26,7 @@ define curl::authfetch($source,$destination,$user,$password="",$timeout="0",$ver
     content => "user = $user:$password",
   } ->
   exec { "curl-$name":
-    command     => "curl $verbose_option --config /tmp/curlrc-$name --output=$destination $source",
+    command     => "curl $verbose_option --config /tmp/curlrc-$name --output $destination $source",
     timeout     => $timeout,
     unless      => "test -s $destination",
     environment => $environment,
