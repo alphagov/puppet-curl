@@ -5,7 +5,7 @@
 # using $http_proxy if necessary.
 #
 ################################################################################
-define curl::fetch($source,$destination,$timeout="0",$verbose=false) {
+define curl::fetch($source,$destination,$options="",$timeout="0",$verbose=false) {
   include curl
 
   if $::http_proxy {
@@ -21,7 +21,7 @@ define curl::fetch($source,$destination,$timeout="0",$verbose=false) {
   }
 
   exec { "curl-$name":
-    command     => "curl $verbose_option --output $destination $source",
+    command     => "curl $verbose_option $options --output $destination $source",
     timeout     => $timeout,
     unless      => "test -s $destination",
     environment => $environment,

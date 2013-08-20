@@ -6,8 +6,17 @@
 # password must be stored in the password variable within the .curlrc file.
 #
 ################################################################################
-define curl::authfetch($source,$destination,$user,$password="",$timeout="0",$verbose=false) {
+define curl::authfetch(
+    $source,
+    $destination,
+    $user,
+    $options="",
+    $password="",
+    $timeout="0",
+    $verbose=false) {
+        
   include curl
+
   if $http_proxy {
     $environment = [ "HTTP_PROXY=$http_proxy", "http_proxy=$http_proxy" ]
   }
@@ -26,7 +35,7 @@ define curl::authfetch($source,$destination,$user,$password="",$timeout="0",$ver
     content => "user = $user:$password",
   } ->
   exec { "curl-$name":
-    command     => "curl $verbose_option --config /tmp/curlrc-$name --output $destination $source",
+    command     => "curl $verbose_option $options --config /tmp/curlrc-$name --output $destination $source",
     timeout     => $timeout,
     unless      => "test -s $destination",
     environment => $environment,
