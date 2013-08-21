@@ -2,18 +2,27 @@
 # Definition: curl::fetch
 #
 # This class will download files from the internet.  You may define a web proxy
-# using $http_proxy if necessary.
+# using $http_proxy or $https_proxy if necessary.
 #
 ################################################################################
-define curl::fetch($source,$destination,$timeout="0",$verbose=false) {
+define curl::fetch($source,$destination,$options="",$timeout="0",$verbose=false) {
   include curl
+  include stdlib
 
   if $::http_proxy {
-    $environment = [ "HTTP_PROXY=$::http_proxy", "http_proxy=$::http_proxy" ]
+    $env1 = [ "HTTP_PROXY=$::http_proxy", "http_proxy=$::http_proxy" ]
   }
   else {
-    $environment = []
+    $env1 = []
   }
+
+  if $::https_proxy {
+    $env2 = [ "HTTPS_PROXY=$::https_proxy", "https_proxy=$::https_proxy" ]
+  }
+  else {
+    $env2 = []
+  }
+
 
   $verbose_option = $verbose ? {
     true  => "--verbose",
@@ -21,10 +30,10 @@ define curl::fetch($source,$destination,$timeout="0",$verbose=false) {
   }
 
   exec { "curl-$name":
-    command     => "curl $verbose_option --output $destination $source",
+    command     => "curl $verbose_option $options --output $destination $source",
     timeout     => $timeout,
     unless      => "test -s $destination",
-    environment => $environment,
+    environment => concat($env1, $env2),
     path        => "/usr/bin:/usr/sbin:/bin:/usr/local/bin:/opt/local/bin",
     require     => Class[curl],
   }
