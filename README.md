@@ -19,10 +19,19 @@ A Puppet module to download files with curl, supporting authentication.
 	  timeout     => 0,
 	  verbose     => false,
 	}
+    
+    curl::fetch { "download":
+      source      => "http://www.google.com/index.html",
+      destination => "/tmp/index.html",
+      timeout     => 0,
+      verbose     => false,
+      options     => "-b 'SomeCookie=value'"
+    }
 
 # License
 
 Copyright (c) 2013 Government Digital Services
+Arbitrary options/https_proxy added by Simon Page <simon.page@lovehoney.co.uk>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
