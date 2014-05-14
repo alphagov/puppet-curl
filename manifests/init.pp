@@ -6,6 +6,6 @@
 ################################################################################
 class curl($version='installed') {
 
-    package { "curl": ensure => $version }
+    package { 'curl': ensure => $version }
 
 }
