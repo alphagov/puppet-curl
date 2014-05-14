@@ -21,7 +21,7 @@ define curl::fetch($source,$destination,$timeout="0",$verbose=false) {
   }
 
   exec { "curl-$name":
-    command     => "curl $verbose_option --output $destination $source",
+    command     => "curl $verbose_option -L --output $destination $source",
     timeout     => $timeout,
     unless      => "test -s $destination",
     environment => $environment,
