@@ -5,7 +5,7 @@
 # using $http_proxy if necessary.
 #
 ################################################################################
-define curl::fetch($source,$destination,$timeout='0',$verbose=false) {
+define curl::fetch($source,$destination,$timeout='0',$verbose=false,$sha=undef) {
   include curl
 
   if $::http_proxy {
@@ -28,4 +28,12 @@ define curl::fetch($source,$destination,$timeout='0',$verbose=false) {
     path        => '/usr/bin:/usr/sbin:/bin:/usr/local/bin:/opt/local/bin',
     require     => Class[curl],
   }
+
+  if $sha != undef {
+    exec { 'curl-sha-$name':
+      command => "test \"`shasum $destination`\" = \"$sha  $destination\"",
+      require => Exec["curl-$name"],
+    }
+  }
+
 }
