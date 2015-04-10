@@ -9,6 +9,7 @@ A Puppet module to download files with curl, supporting authentication.
 	  destination => "/tmp/index.html",
 	  timeout     => 0,
 	  verbose     => false,
+    sha         => "F79B40AEBC81B822F6096D606098CDA62C1997CD",
 	}
 	
 	curl::authfetch { "download":
