@@ -20,18 +20,26 @@ define curl::fetch($source,$destination,$timeout='0',$verbose=false,$sha=undef) 
     false => '--silent --show-error'
   }
 
+  if $sha {
+    $unless = "test \"`shasum $destination`\" = \"$sha  $destination\""
+  }
+  else {
+    $unless = "test -s $destination"
+  }
+
   exec { "curl-$name":
     command     => "curl $verbose_option -L --output $destination $source",
     timeout     => $timeout,
-    unless      => "test -s $destination",
+    unless      => $unless,
     environment => $environment,
     path        => '/usr/bin:/usr/sbin:/bin:/usr/local/bin:/opt/local/bin',
     require     => Class[curl],
   }
 
   if $sha != undef {
-    exec { 'curl-sha-$name':
-      command => "test \"`shasum $destination`\" = \"$sha  $destination\"",
+    exec { "curl-sha-$name":
+      command => $unless,
+      unless  => $unless,
       require => Exec["curl-$name"],
     }
   }
