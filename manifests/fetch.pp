@@ -5,7 +5,14 @@
 # using $http_proxy if necessary.
 #
 ################################################################################
-define curl::fetch($source,$destination,$timeout='0',$verbose=false,$sha=undef) {
+define curl::fetch(
+  $source,
+  $destination,
+  $timeout = '0',
+  $verbose = false,
+  $sha = undef,
+) {
+
   include curl
 
   if $::http_proxy {
@@ -35,5 +42,4 @@ define curl::fetch($source,$destination,$timeout='0',$verbose=false,$sha=undef) 
       require => Exec["curl-$name"],
     }
   }
-
 }
