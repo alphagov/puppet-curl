@@ -8,9 +8,11 @@
 define curl::fetch(
   $source,
   $destination,
-  $timeout = '0',
-  $verbose = false,
-  $sha = undef,
+  $timeout    = '0',
+  $verbose    = false,
+  $sha        = undef,
+  $redownload = false,
+  $onlyif     = 'not_existing',
 ) {
 
   include curl
@@ -27,10 +29,20 @@ define curl::fetch(
     false => '--silent --show-error'
   }
 
+  if $redownload {
+    $unless_condition = 'test'
+  }
+  elsif $onlyif == 'modified' {
+    $unless_condition = "test -s $destination && curl --head $verbose_option -L -z $destination $source | grep '304 Not Modified'"
+  }
+  else {
+    $unless_condition = "test -s $destination"
+  }
+
   exec { "curl-$name":
     command     => "curl $verbose_option -L --output $destination $source",
     timeout     => $timeout,
-    unless      => "test -s $destination",
+    unless      => $unless_condition,
     environment => $environment,
     path        => '/usr/bin:/usr/sbin:/bin:/usr/local/bin:/opt/local/bin',
     require     => Class[curl],
