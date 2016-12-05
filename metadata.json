@@ -1,5 +1,11 @@
 {
     "author": "Government Digital Service",
+    "dependencies": [
+        {
+            "name": "puppetlabs/stdlib",
+            "version_requirement": ">=4.2.0 <5.0.0"
+        }
+    ],
     "issues_url": "https://github.com/alphagov/puppet-curl/issues",
     "license": "Apache License, Version 2.0",
     "name": "alphagov-curl",
