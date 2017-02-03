@@ -2,20 +2,20 @@ A Puppet module to download files with curl, supporting authentication.
 
 # Example
 
-	include curl
-	
-	curl::fetch { "download":
-	  source      => "http://www.google.com/index.html",
-	  destination => "/tmp/index.html",
+	include ::curl
+
+	curl::fetch { 'download':
+	  source      => 'http://www.google.com/index.html',
+	  destination => '/tmp/index.html',
 	  timeout     => 0,
 	  verbose     => false,
 	}
-	
-	curl::authfetch { "download":
-	  source      => "http://www.google.com/index.html",
-	  destination => "/tmp/index.html",
-	  user        => "user",
-	  password    => "password",
+
+	curl::authfetch { 'download':
+	  source      => 'http://www.google.com/index.html',
+	  destination => '/tmp/index.html',
+	  user        => 'user',
+	  password    => 'password',
 	  timeout     => 0,
 	  verbose     => false,
 	}
