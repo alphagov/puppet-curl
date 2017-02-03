@@ -20,15 +20,15 @@ define curl::authfetch($source,$destination,$user,$password='',$timeout='0',$ver
     false => '--silent --show-error'
   }
 
-  file { "/tmp/curlrc-$name":
+  file { "/tmp/curlrc-${name}":
     owner   => root,
     mode    => '0600',
-    content => "user = $user:$password",
+    content => "user = ${user}:${password}",
   } ->
-  exec { "curl-$name":
-    command     => "curl $verbose_option --config /tmp/curlrc-$name --output $destination $source",
+  exec { "curl-${name}":
+    command     => "curl ${verbose_option} --config /tmp/curlrc-${name} --output ${destination} ${source}",
     timeout     => $timeout,
-    unless      => "test -s $destination",
+    unless      => "test -s ${destination}",
     environment => $environment,
     path        => '/usr/bin:/usr/sbin:/bin:/usr/local/bin:/opt/local/bin',
     require     => Class[curl],
