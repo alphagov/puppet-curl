@@ -8,10 +8,9 @@
 define curl::fetch($source,$destination,$timeout='0',$verbose=false,$sha=undef) {
   include curl
 
-  if $::http_proxy {
+  if defined('$::http_proxy') and $::http_proxy != undef {
     $environment = [ "HTTP_PROXY=${::http_proxy}", "http_proxy=${::http_proxy}" ]
-  }
-  else {
+  } else {
     $environment = []
   }
 
