@@ -20,7 +20,7 @@ define curl::fetch($source,$destination,$timeout='0',$verbose=false,$sha=undef) 
   }
 
   exec { "curl-${name}":
-    command     => "curl ${verbose_option} -L --output ${destination} ${source}",
+    command     => "curl ${verbose_option} -L --output ${destination} '${source}'",
     timeout     => $timeout,
     unless      => "test -s ${destination}",
     environment => $environment,
